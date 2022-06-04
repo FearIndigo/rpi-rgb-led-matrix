@@ -211,10 +211,10 @@ int Font::DrawGlyphInverted(Canvas *c, int x_pos, int y_pos,
     const rowbitmap_t& row = g->bitmap[y];
     for (int x = 0; x < g->device_width; ++x) {
       if (row.test(kMaxFontWidth - 1 - x)) {
-        c->SetPixel(x_pos + (g->device_width - x) - g->device_width / 2, y_pos + (g->height - y),
+        c->SetPixel(x_pos + (g->device_width - x) - g->device_width / 2, y_pos + (g->height - y) - g->height / 2,
           color.r, color.g, color.b);
       } else if (bgcolor) {
-        c->SetPixel(x_pos + (g->device_width - x) - g->device_width / 2, y_pos + (g->height - y),
+        c->SetPixel(x_pos + (g->device_width - x) - g->device_width / 2, y_pos + (g->height - y) - g->height / 2,
           bgcolor->r, bgcolor->g, bgcolor->b);
       }
     }
