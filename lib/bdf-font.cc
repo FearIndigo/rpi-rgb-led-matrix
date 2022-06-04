@@ -207,14 +207,15 @@ int Font::DrawGlyphInverted(Canvas *c, int x_pos, int y_pos,
   if (g == NULL) g = FindGlyph(kUnicodeReplacementCodepoint);
   if (g == NULL) return 0;
   y_pos = y_pos - g->height - g->y_offset;
+  x_pos -= g->device_width;
   for (int y = 0; y < g->height; ++y) {
     const rowbitmap_t& row = g->bitmap[y];
     for (int x = 0; x < g->device_width; ++x) {
       if (row.test(kMaxFontWidth - 1 - x)) {
-        c->SetPixel(x_pos + (g->device_width - x) - g->device_width / 2, y_pos + (g->height - y) - g->height / 2,
+        c->SetPixel(x_pos + (g->device_width - x), y_pos + (g->height - y),
           color.r, color.g, color.b);
       } else if (bgcolor) {
-        c->SetPixel(x_pos + (g->device_width - x) - g->device_width / 2, y_pos + (g->height - y) - g->height / 2,
+        c->SetPixel(x_pos + (g->device_width - x), y_pos + (g->height - y),
           bgcolor->r, bgcolor->g, bgcolor->b);
       }
     }

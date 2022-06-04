@@ -19,7 +19,6 @@
 #include <stdlib.h>
 #include <functional>
 #include <algorithm>
-#include <cstring>
 
 namespace rgb_matrix {
 bool SetImage(Canvas *c, int canvas_offset_x, int canvas_offset_y,
@@ -99,22 +98,13 @@ int DrawText(Canvas *c, const Font &font,
 int DrawTextInverted(Canvas *c, const Font &font,
          int x, int y, const Color &color, const Color *background_color,
          const char *utf8_text, int extra_spacing) {
-  // find length of string
-  int n = strlen(utf8_text);
-  // create a dynamic pointer char array
-  char* rev = new char[n + 1];
-  // copy of string to ptr array
-  strcpy(rev, utf8_text);
-  // Swap character starting from two corners
-  for (int i = 0, j = n - 1; i < j; i++, j--)
-    std::swap(rev[i], rev[j]);
   const int start_x = x;
   while (*rev) {
     const uint32_t cp = utf8_next_codepoint(rev);
     x -= font.DrawGlyphInverted(c, x, y, color, background_color, cp);
     x -= extra_spacing;
   }
-  return -x - start_x;
+  return start_x - x;
 }
 
 // There used to be a symbol without the optional extra_spacing parameter. Let's
