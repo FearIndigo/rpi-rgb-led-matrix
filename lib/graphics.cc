@@ -99,8 +99,8 @@ int DrawTextInverted(Canvas *c, const Font &font,
          int x, int y, const Color &color, const Color *background_color,
          const char *utf8_text, int extra_spacing) {
   const int start_x = x;
-  while (*rev) {
-    const uint32_t cp = utf8_next_codepoint(rev);
+  while (*utf8_text) {
+    const uint32_t cp = utf8_next_codepoint(utf8_text);
     x -= font.DrawGlyphInverted(c, x, y, color, background_color, cp);
     x -= extra_spacing;
   }
