@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <functional>
 #include <algorithm>
+#include <cstring>
 
 namespace rgb_matrix {
 bool SetImage(Canvas *c, int canvas_offset_x, int canvas_offset_y,
