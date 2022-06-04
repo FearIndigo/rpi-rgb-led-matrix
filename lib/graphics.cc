@@ -95,6 +95,27 @@ int DrawText(Canvas *c, const Font &font,
   return x - start_x;
 }
 
+int DrawTextInverted(Canvas *c, const Font &font,
+         int x, int y, const Color &color, const Color *background_color,
+         const char *utf8_text, int extra_spacing) {
+  // find length of string
+  int n = strlen(utf8_text);
+  // create a dynamic pointer char array
+  char* rev = new char[n + 1];
+  // copy of string to ptr array
+  strcpy(rev, utf8_text);
+  // Swap character starting from two corners
+  for (int i = 0, j = n - 1; i < j; i++, j--)
+    swap(rev[i], rev[j]);
+  const int start_x = x;
+  while (*rev) {
+    const uint32_t cp = utf8_next_codepoint(rev);
+    x += font.DrawGlyphInverted(c, x, y, color, background_color, cp);
+    x += extra_spacing;
+  }
+  return x - start_x;
+}
+
 // There used to be a symbol without the optional extra_spacing parameter. Let's
 // define this here so that people linking against an old library will still
 // have their code usable. Now: 2017-06-04; can probably be removed in a couple

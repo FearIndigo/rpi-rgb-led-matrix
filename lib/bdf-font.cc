@@ -200,6 +200,26 @@ int Font::DrawGlyph(Canvas *c, int x_pos, int y_pos,
   return g->device_width;
 }
 
+int Font::DrawGlyphInverted(Canvas *c, int x_pos, int y_pos,
+                const Color &color, const Color *bgcolor,
+                uint32_t unicode_codepoint) const {
+  const Glyph *g = FindGlyph(unicode_codepoint);
+  if (g == NULL) g = FindGlyph(kUnicodeReplacementCodepoint);
+  if (g == NULL) return 0;
+  y_pos = y_pos - g->height - g->y_offset;
+  for (int y = 0; y < g->height; ++y) {
+    const rowbitmap_t& row = g->bitmap[y];
+    for (int x = 0; x < g->device_width; ++x) {
+      if (row.test(kMaxFontWidth - 1 - x)) {
+        c->SetPixel(g->width - (x_pos + x), g->height - (y_pos + y), color.r, color.g, color.b);
+      } else if (bgcolor) {
+        c->SetPixel(g->width - (x_pos + x), g->height - (y_pos + y), bgcolor->r, bgcolor->g, bgcolor->b);
+      }
+    }
+  }
+  return g->device_width;
+}
+
 int Font::DrawGlyph(Canvas *c, int x_pos, int y_pos, const Color &color,
                     uint32_t unicode_codepoint) const {
   return DrawGlyph(c, x_pos, y_pos, color, NULL, unicode_codepoint);

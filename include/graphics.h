@@ -55,6 +55,18 @@ public:
                 const Color &color, const Color *background_color,
                 uint32_t unicode_codepoint) const;
 
+  // Draws the inverted unicode character at position "x","y"
+  // with "color" on "background_color" (background_color can be NULL for
+  // transparency.
+  // The "y" position is the baseline of the font.
+  // If we don't have it in the font, draws the replacement character "�" if
+  // available.
+  // Returns how much we advance on the screen, which is the width of the
+  // character or 0 if we didn't draw any chracter.
+  int DrawGlyphInverted(Canvas *c, int x, int y,
+                const Color &color, const Color *background_color,
+                uint32_t unicode_codepoint) const;
+
   // Same without background. Deprecated, use the one above instead.
   int DrawGlyph(Canvas *c, int x, int y, const Color &color,
                 uint32_t unicode_codepoint) const;
@@ -114,6 +126,17 @@ bool SetImage(Canvas *c, int canvas_offset_x, int canvas_offset_y,
 // negative)
 // Returns how many pixels we advanced on the screen.
 int DrawText(Canvas *c, const Font &font, int x, int y,
+             const Color &color, const Color *background_color,
+             const char *utf8_text, int kerning_offset = 0);
+
+// Draw inverted text, a standard NUL terminated C-string encoded in UTF-8,
+// with given "font" at "x","y" with "color".
+// "color" always needs to be set (hence it is a reference),
+// "background_color" is a pointer to optionally be NULL for transparency.
+// "kerning_offset" allows for additional spacing between characters (can be
+// negative)
+// Returns how many pixels we advanced on the screen.
+int DrawTextInverted(Canvas *c, const Font &font, int x, int y,
              const Color &color, const Color *background_color,
              const char *utf8_text, int kerning_offset = 0);
 
