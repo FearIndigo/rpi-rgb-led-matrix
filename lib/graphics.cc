@@ -107,7 +107,7 @@ int DrawTextInverted(Canvas *c, const Font &font,
   strcpy(rev, utf8_text);
   // Swap character starting from two corners
   for (int i = 0, j = n - 1; i < j; i++, j--)
-    swap(rev[i], rev[j]);
+    std::swap(rev[i], rev[j]);
   const int start_x = x;
   while (*rev) {
     const uint32_t cp = utf8_next_codepoint(rev);
