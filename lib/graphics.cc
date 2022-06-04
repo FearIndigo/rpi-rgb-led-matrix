@@ -111,10 +111,10 @@ int DrawTextInverted(Canvas *c, const Font &font,
   const int start_x = x;
   while (*rev) {
     const uint32_t cp = utf8_next_codepoint(rev);
-    x += font.DrawGlyphInverted(c, x, y, color, background_color, cp);
-    x += extra_spacing;
+    x -= font.DrawGlyphInverted(c, x, y, color, background_color, cp);
+    x -= extra_spacing;
   }
-  return x - start_x;
+  return -x - start_x;
 }
 
 // There used to be a symbol without the optional extra_spacing parameter. Let's
